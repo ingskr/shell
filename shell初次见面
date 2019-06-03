@@ -34,4 +34,34 @@ Swap:       2097148           0     2097148
 FreeMam
 [root@ly linuxprobe]# [ $FreeMam -lt 1024 ] && echo "Insufficient Memory" || echo "内存充足" 
 内存充足
+    使用for循环语句从列表文件中读取多个用户名，
+    然后为其逐一创建用户账户并设置密码。
+    首先创建用户名称的列表文件users.txt，
+    每个用户名称单独一行。读者可以自行决定具体的用户名称和个数：
+    接下来编写Shell脚本Example.sh。在脚本中使用read命令读取用户输入的密码值，
+    然后赋值给PASSWD变量，并通过-p参数向用户显示一段提示信息，告诉用户正在输入的内容即将作为账户密码。在执行该脚本后，
+    会自动使用从列表文件users.txt中获取到所有的用户名称，然后逐一使用“id 用户名”命令查看用户的信息，并使用$?判断这条命令是否执行成功，
+    也就是判断该用户是否已经存在。需要多说一句，/dev/null是一个被称作Linux黑洞的文件，
+    把输出信息重定向到这个文件等同于删除数据（类似于没有回收功能的垃圾箱），可以让用户的屏幕窗口保持简洁。
+#!/bin/bash
+read -p "Enter The users Password :" PASSWD
+for UNAME in `cat users.txt`
+do
+id $UNAME &> /dev/null
+if [ $? -eq 0 ]
+then
+echo "Already exists"
+else
+useradd $UNAME &> /dev/null
+echo "$PASSWD" | passwd --stdin $UNAME &> /dev/null
+if [ $? -eq 0 ]
+then
+echo "$UNAME , Create success"
+else
+echo "$UNAME , Create failure"
+fi
+fi
+done
+
+
 
