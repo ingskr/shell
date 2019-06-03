@@ -1,0 +1,37 @@
+[root@linuxprobe ~]# vim example.sh
+#!/bin/bash
+echo "当前脚本名称为$0"
+echo "总共有$#个参数，分别是$*。"
+echo "第1个参数为$1，第5个为$5。"
+[root@linuxprobe ~]# sh example.sh one two three four five six
+当前脚本名称为example.sh
+总共有6个参数，分别是one two three four five six。
+第1个参数为one，第5个为five。
+在shell终端中逻辑与“&&”,表示当前命令执行成功后才会执行后面的命令。
+逻辑或“||”，当前命令执行失败之后，才执行后面命令。
+（！）把条件测试中的判断结果取相反的值。
+运算符	作用
+-eq	是否等于
+-ne	是否不等于
+-gt	是否大于
+-lt	是否小于
+-le	是否等于或小于
+-ge	是否大于或等于
+运算符	作用
+-d	测试文件是否为目录类型
+-e	测试文件是否存在
+-f	判断是否为一般文件
+-r	测试当前用户是否有权限读取
+-w	测试当前用户是否有权限写入
+-x	测试当前用户是否有权限执行
+
+[root@ly linuxprobe]# free man
+              total        used        free      shared  buff/cache   available
+Mem:        3861484      846808     1271796       22592     1742880     2613264
+Swap:       2097148           0     2097148
+[root@ly linuxprobe]# FreeMam=`free man | grep Mem: | awk '{print $4}'`（此处标点为tab上面一点）
+[root@ly linuxprobe]# echo FreeMam
+FreeMam
+[root@ly linuxprobe]# [ $FreeMam -lt 1024 ] && echo "Insufficient Memory" || echo "内存充足" 
+内存充足
+
