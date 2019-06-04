@@ -135,3 +135,22 @@ fi
 done
 ################################################################################################
 产生随机数，并且猜测这个随机数
+vim Guess.sh
+#!/bin/bash
+PRICE=$(expr $RANDOM % 1000)
+TIMES=0
+echo "商品价格为0-999，猜是多少？"
+while true
+do
+read -p "guess price" INT
+let TIMES++
+if [ $INT -eq $PRICE ]; then
+echo "恭喜你正确，实际价格为$PRICE"
+echo "你一共猜了$TIMES次"
+exit 0
+elif [ $INT -gt $PRICE ];then
+echo "highly"
+else
+echo "lowly"
+fi
+done
