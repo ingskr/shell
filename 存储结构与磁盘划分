@@ -1,0 +1,29 @@
+``````````磁盘挂载```````````````
+临时挂载:
+mount /dev/sdb2 /backup
+永久挂载：（填写格式）
+设备文件 挂载目录 格式类型 权限选项 是否备份 是否自检
+写入/etc/fstab
+字段	意义
+设备文件	一般为设备的路径+设备名称，也可以写唯一识别码（UUID，Universally Unique Identifier）
+挂载目录	指定要挂载到的目录，需在挂载前创建好
+格式类型	指定文件系统的格式，比如Ext3、Ext4、XFS、SWAP、iso9660（此为光盘设备）等
+权限选项	若设置为defaults，则默认权限为：rw, suid, dev, exec, auto, nouser, async
+是否备份	若为1则开机后使用dump进行磁盘备份，为0则不备份
+是否自检	若为1则开机后自动进行磁盘自检，为0则不自检
+将文件系统为ext4的硬件设备/dev/sdb2在开机后自动挂载到/backup目录上，并保持默认权限且无需开机自检
+vim /etc/fstab
+/dev/sdb2       /backup                         exit    defaults        0 0
+umount命令
+umount[挂载点/设备文件]
+fdisk命令 理解 n p 退出时输入 w 
+有些时候系统并没有自动把分区信息同步给Linux内核
+输入partprobe命令
+在使用file /dev/sdb1查看
+格式化分区
+[root@ly ~]# mkfs.ext3 /dev/sdb1
+挂载并使用存储设备
+mount /dev/sdb1 /new/
+df -h
+/dev/sdb1                 20G   45M   19G   1% /new
+
