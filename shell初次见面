@@ -121,7 +121,17 @@ vim ipadds.txt
 192.168.74.138
 192.168.74.139
 192.168.74.137
-
-
-
-
+vim CheckHosts.sh
+#!/bin/bash
+HLIST=$(cat ipadds.txt)
+for IP in $HLIST
+do
+ping -w 3 -c 3 -i 0.2 $IP &> /dev/null
+if [ $? -eq 0 ] ; then 
+echo "Host $IP is On-line"
+else
+echo "Host $IP is off-line"
+fi
+done
+################################################################################################
+产生随机数，并且猜测这个随机数
