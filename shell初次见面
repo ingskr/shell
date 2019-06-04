@@ -170,4 +170,28 @@ echo "你输入的是数字"
 *)
 echo "你输入的是别的控制字符"
 esac
-
+################################################################################
+计划任务服务程序
+分别为一次性任务和长期任务
+例如：
+一次性计划任务：今晚11.30开启网站服务
+长期计划性任务：每周一凌晨3.25把/home/wwwroot目录打包备份为backup.tar.gz
+一次性任务用at命令，“at 时间”形式就可以了
+查看已设置好，未执行的业务 at -l,删除 atrm 任务序号
+默认采用交互法：
+设置在今晚23.30分自动重启网站服务
+[root@ly linuxprobe]# at 23:30
+at> systemctl restart httpd
+at> <EOT>
+job 1 at Tue Jun  4 23:30:00 2019
+[root@ly linuxprobe]# 
+加入管道符，让at命令接收echo命令的输出信息，以达到非交互式的方式创建计划一次性任务目的。
+[root@ly linuxprobe]# echo "systemctl restart httpd"| at 23:40
+job 2 at Tue Jun  4 23:40:00 2019
+[root@ly linuxprobe]# at -l
+1	Tue Jun  4 23:30:00 2019 a root
+2	Tue Jun  4 23:40:00 2019 a root
+删除任务命令 
+[root@ly linuxprobe]# atrm 2
+[root@ly linuxprobe]# at -l
+1	Tue Jun  4 23:30:00 2019 a root
