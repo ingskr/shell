@@ -89,6 +89,38 @@ else
 echo "$GRADE NO-pass"
 fi
 ####################################################################################
+从列表中读取多个用户名，并逐一创建账户设置密码，users.txt
+vim users.txt
+adasnf
+daffv
+dfr
+ccc
+
+vim example.sh
+#!/bin/bash
+read -p "请输入密码:" $PASWD
+for UNAME in `cat users.txt`
+do
+id $UNAME &> /dev/null
+if [ $? -eq 0 ]
+then
+echo "Already exists"
+else
+useradd $UNAME &> /dev/null
+echo "$PASSWD" | passwd --stdin $UNAME &> /dev/null
+if [ $? -eq 0 ] ; then
+echo "$UNAME , Create success"
+else
+echo "$UNAME , Create Fail"
+fi
+fi
+done
+##################################################################################
+批量测试主机是否在线脚本
+vim ipadds.txt
+192.168.74.138
+192.168.74.139
+192.168.74.137
 
 
 
