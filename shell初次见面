@@ -63,5 +63,30 @@ fi
 fi
 done
 
+###############################################################################
+if语句来实现某台主机是否在线
+vim chkhost.sh
+#!/bin/bash
+ping -c 3 -i 0.2 -w 3 $1 &> /dev/null
+if [ $? -eq 0 ]
+then
+echo "Host $1 is On-line。"
+else
+echo "Host $1 is off-line。"
+fi
+#################################################################################
+用户输入程序显示成绩区间
+vim chksorce.sh
+#!/bin/bash
+read -p "Enter your score(1-100):" GRADE   
+if [ $GRADE -gq 85 ] && [ $GRADE -le 100 ] ; then
+echo "$GRADE is Excellent"
+elif [ $GRADE -gt 70 ] && [ $GRADE -le 84 ] ; then
+echo "$GRADE is Pass"
+else
+echo "$GRADE NO-pass"
+fi
+
+
 
 
