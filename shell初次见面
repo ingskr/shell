@@ -79,13 +79,16 @@ fi
 vim chksorce.sh
 #!/bin/bash
 read -p "Enter your score(1-100):" GRADE   
-if [ $GRADE -gq 85 ] && [ $GRADE -le 100 ] ; then
+if [ $GRADE -gt 100 ] ; then 
+echo "$GRADE is a error number"
+elif [ $GRADE -gq 85 ] && [ $GRADE -le 100 ] ; then
 echo "$GRADE is Excellent"
 elif [ $GRADE -gt 70 ] && [ $GRADE -le 84 ] ; then
 echo "$GRADE is Pass"
 else
 echo "$GRADE NO-pass"
 fi
+####################################################################################
 
 
 
