@@ -82,6 +82,33 @@ Pass 4: Checking reference counts
 Pass 5: Checking group summary information
 /dev/storage/vo: 12/74000 files (0.0% non-contiguous), 15509/299008 blocks
 2.把逻辑卷vo的容量减小到120MB。
+[root@ly ~]# resize2fs /dev/storage/vo 120M
+resize2fs 1.42.9 (28-Dec-2013)
+Resizing the filesystem on /dev/storage/vo to 122880 (1k) blocks.
+The filesystem on /dev/storage/vo is now 122880 blocks long.
+
+[root@ly ~]# lvreduce -L 120M /dev/storage/vo 
+  WARNING: Reducing active logical volume to 120.00 MiB.
+  THIS MAY DESTROY YOUR DATA (filesystem etc.)
+Do you really want to reduce storage/vo? [y/n]: y
+  Size of logical volume storage/vo changed from 292.00 MiB (73 extents) to 120.00 MiB (30 extents).
+  Logical volume storage/vo successfully resized.
+3.重新挂载文件系统并查看状态。
+[root@ly ~]# mount -a
+[root@ly ~]# df -h
+Filesystem               Size  Used Avail Use% Mounted on
+/dev/mapper/centos-root   17G   11G  6.5G  63% /
+devtmpfs                 1.9G     0  1.9G   0% /dev
+tmpfs                    1.9G     0  1.9G   0% /dev/shm
+tmpfs                    1.9G   13M  1.9G   1% /run
+tmpfs                    1.9G     0  1.9G   0% /sys/fs/cgroup
+/dev/sdb1                 20G   45M   19G   1% /new
+/dev/sda1               1014M  179M  836M  18% /boot
+tmpfs                    378M  4.0K  378M   1% /run/user/42
+tmpfs                    378M   24K  378M   1% /run/user/1000
+/dev/sr0                 4.3G  4.3G     0 100% /run/media/ly/CentOS 7 x86_64
+tmpfs                    378M     0  378M   0% /run/user/0
+/dev/mapper/storage-vo   113M  1.6M  103M   2% /new1
 
 
 
