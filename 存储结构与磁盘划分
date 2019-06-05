@@ -55,6 +55,12 @@ blkid获取分区的uuid编号
 echo "UUID="09a361b4-7961-4e31-873f-2007b8da0ad9" /new1 ext4 defaults 0 0 " >> /etc/fstab 
 ###############################################################################################
 扩容逻辑卷
+只要卷组中有足够的资源，就可以一直未逻辑卷扩容，扩容前一定要记得卸载设备和挂载点的关联。
+[root@ly ~]# umount /new1
+[root@ly ~]# lvextend -L 290M /dev/storage/vo 
+  Rounding size to boundary between physical extents: 292.00 MiB.
+  Size of logical volume storage/vo changed from 148.00 MiB (37 extents) to 292.00 MiB (73 extents).
+  Logical volume storage/vo successfully resized.
 
 
 
