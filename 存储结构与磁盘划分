@@ -31,3 +31,12 @@ df -h
 物理卷    pvscan  pvcreate   pvdispaly   pvremove    
 卷组管理  vgscan vgcreate   vgdisplay    vgremove     vgextend    vgreduce
 逻辑卷    lvscan   lvcreate  lvdisplay   lvremove    lvextend     lvreduce
+逻辑卷部署
+1、让新添加的硬盘支持lvm技术
+pvcreate /dev/sdc
+2、将硬盘设备添加到stroage卷组中
+vgcreate stroage /dev/sdc
+vgdispaly#查看卷组状态
+3.切割约150MB的卷逻辑设备（对逻辑卷的切割有两种计量单位）
+（1）以容量为单位，-L,如，使用-L 150M 生成150MB的逻辑卷。
+（2）以基本单元的个数为单位，-l,每个基本单元默认为4MB，37*4MB=148MB。
