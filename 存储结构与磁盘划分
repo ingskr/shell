@@ -26,4 +26,8 @@ fdisk命令 理解 n p 退出时输入 w
 mount /dev/sdb1 /new/
 df -h
 /dev/sdb1                 20G   45M   19G   1% /new
-
+#####################################################################
+         扫描    建立       显示          删除        拓展        缩小
+物理卷    pvscan  pvcreate   pvdispaly   pvremove    
+卷组管理  vgscan vgcreate   vgdisplay    vgremove     vgextend    vgreduce
+逻辑卷    lvscan   lvcreate  lvdisplay   lvremove    lvextend     lvreduce
