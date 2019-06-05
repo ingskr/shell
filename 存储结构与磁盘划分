@@ -50,6 +50,11 @@ mount /dev/stroage/vo /new1
 5、查看挂载状态，并写入配置文件
 df -h
 blkid获取分区的uuid编号
+[root@ly ~]# blkid /dev/mapper/storage-vo
+/dev/mapper/storage-vo: UUID="09a361b4-7961-4e31-873f-2007b8da0ad9" TYPE="ext4" 
+echo "UUID="09a361b4-7961-4e31-873f-2007b8da0ad9" /new1 ext4 defaults 0 0 " >> /etc/fstab 
+###############################################################################################
+扩容逻辑卷
 
 
 
