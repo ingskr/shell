@@ -57,10 +57,31 @@ echo "UUID="09a361b4-7961-4e31-873f-2007b8da0ad9" /new1 ext4 defaults 0 0 " >> /
 扩容逻辑卷
 只要卷组中有足够的资源，就可以一直未逻辑卷扩容，扩容前一定要记得卸载设备和挂载点的关联。
 [root@ly ~]# umount /new1
+1、将上一个实验的140MB扩容为290MB
 [root@ly ~]# lvextend -L 290M /dev/storage/vo 
   Rounding size to boundary between physical extents: 292.00 MiB.
   Size of logical volume storage/vo changed from 148.00 MiB (37 extents) to 292.00 MiB (73 extents).
   Logical volume storage/vo successfully resized.
+2.检查硬盘的完整性，并重置硬盘容量
+e2fsck -f /dev/storage/vo
+resize2fs /dev/storage/vo
+3.重新挂载磁盘并检查挂载状态
+mount -a
+df -h
+#############################################################################
+缩小逻辑卷
+！！！！！！！！！！提前备份好数据，缩容之前检查系统完整性，缩容前卸载文件系统！！！！！！！！！！！！！！！！！！！！！！！！！
+1.检查系统完整性
+[root@ly ~]# umount /new1
+[root@ly ~]# e2fsck -f /dev/storage/vo 
+e2fsck 1.42.9 (28-Dec-2013)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/dev/storage/vo: 12/74000 files (0.0% non-contiguous), 15509/299008 blocks
+2.把逻辑卷vo的容量减小到120MB。
 
 
 
