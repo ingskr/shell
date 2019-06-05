@@ -40,3 +40,19 @@ vgdispaly#查看卷组状态
 3.切割约150MB的卷逻辑设备（对逻辑卷的切割有两种计量单位）
 （1）以容量为单位，-L,如，使用-L 150M 生成150MB的逻辑卷。
 （2）以基本单元的个数为单位，-l,每个基本单元默认为4MB，37*4MB=148MB。
+lvcreate -n vo -l 37 storage
+lvdisplay
+4、生成好的逻辑卷格式化，然后挂载使用
+mkfs.ext4 /dev/stroage/vo
+mkdir /new1
+mount /dev/stroage/vo /new1
+
+5、查看挂载状态，并写入配置文件
+df -h
+blkid获取分区的uuid编号
+
+
+
+
+
+
