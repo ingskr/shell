@@ -109,9 +109,104 @@ tmpfs                    378M   24K  378M   1% /run/user/1000
 /dev/sr0                 4.3G  4.3G     0 100% /run/media/ly/CentOS 7 x86_64
 tmpfs                    378M     0  378M   0% /run/user/0
 /dev/mapper/storage-vo   113M  1.6M  103M   2% /new1
+###########################################################3
+逻辑卷快照
+逻辑卷快照功能有两个特点：
+（1）快照卷的容量必须等同于逻辑卷的容量；
+（2）快照卷仅一次有效，一旦执行还原操作后则会被立即自动删除。
+查看卷组信息
+vgdisplay
+--- Volume group ---
+  VG Name               storage
+  System ID             
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  4
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                1
+  Open LV               1
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               <20.00 GiB
+  PE Size               4.00 MiB
+  Total PE              5119
+  Alloc PE / Size       30 / 120.00 MiB
+  Free  PE / Size       5089 / <19.88 GiB
+  VG UUID               1NZ6Mq-Grlf-pUxB-nXDj-t8k8-dEZ0-xHKf4l
+接下来用重定向往逻辑卷设备所挂载的目录中写入一个文件。
+[root@ly new1]# echo "Hello new1" > /new1/readme.txt
+1.使用-s参数生成一个快照卷，使用-L参数指定切割的大小。
+另外，还需要在命令后面写上是针对哪个逻辑卷执行的快照操作。
+[root@ly new1]# lvcreate -L 120M -s -n SNAP /dev/storage/vo
+  Logical volume "SNAP" created.
+[root@ly new1]# lvdisplay
+--- Logical volume ---
+  LV Path                /dev/storage/SNAP
+  LV Name                SNAP
+  VG Name                storage
+  LV UUID                juiYXQ-CtAq-0P8O-4kyK-iZYM-UOVX-2QZqH2
+  LV Write Access        read/write
+  LV Creation host, time ly, 2019-06-05 05:57:30 -0400
+  LV snapshot status     active destination for vo
+  LV Status              available
+  # open                 0
+  LV Size                120.00 MiB
+  Current LE             30
+  COW-table size         120.00 MiB
+  COW-table LE           30
+  Allocated to snapshot  0.01%
+  Snapshot chunk size    4.00 KiB
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     8192
+  Block device           253:5
+2.在逻辑卷所挂载的目录创建一个100MB的垃圾文件，然后在沙坎快照卷的状态。可以发现存储空间占的用量上升了。
+[root@ly ~]# dd if=/dev/zero of=/new1/files count=1 bs=100M
+1+0 records in
+1+0 records out
+104857600 bytes (105 MB) copied, 1.91332 s, 54.8 MB/s
 
+[root@ly ~]# lvdisplay
+--- Logical volume ---
+  LV Path                /dev/storage/SNAP
+  LV Name                SNAP
+  VG Name                storage
+  LV UUID                juiYXQ-CtAq-0P8O-4kyK-iZYM-UOVX-2QZqH2
+  LV Write Access        read/write
+  LV Creation host, time ly, 2019-06-05 05:57:30 -0400
+  LV snapshot status     active destination for vo
+  LV Status              available
+  # open                 0
+  LV Size                120.00 MiB
+  Current LE             30
+  COW-table size         120.00 MiB
+  COW-table LE           30
+  Allocated to snapshot  83.71%
+  Snapshot chunk size    4.00 KiB
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     8192
+  Block device           253:5
+  
+3.为校验SNAP快照卷的效果，需对快照卷进行还原操作，在此之前先卸载逻辑卷设备与目录的挂载
+[root@ly ~]# umount /new1
+[root@ly ~]# lvconvert --merge /dev/storage/SNAP 
+  Merging of volume storage/SNAP started.
+  storage/vo: Merged: 23.86%
+  storage/vo: Merged: 100.00%
 
-
+4.快照卷会被删除，100MB的垃圾文件也被删除
+[root@ly ~]# mount -a
+[root@ly ~]# ls /new1
+lost+found  readme.txt
+[root@ly ~]# 
+#######################################################################################################33
+删除逻辑卷
 
 
 
