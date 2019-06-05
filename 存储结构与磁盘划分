@@ -207,6 +207,19 @@ lost+found  readme.txt
 [root@ly ~]# 
 #######################################################################################################33
 删除逻辑卷
-
-
+当生产环境中想要重新部署lvm或者不需要使用lvm时，则需要执行LVM的删除操作。
+为此，需要提前备份好重要的数据信息，然后依次删除逻辑卷、卷组、物理卷设备，这个顺序不可颠倒。
+1.消逻辑卷与目录的挂载关联，删除配置文件中永久生效的设备参数。
+[root@ly ~]# umount /new1
+[root@ly ~]# vim /etc/fstab
+2.删除逻辑卷设备，需要输入y来确认操作。
+[root@ly ~]# lvremove /dev/storage/vo 
+Do you really want to remove active logical volume storage/vo? [y/n]: y
+  Logical volume "vo" successfully removed
+3.删除卷组，此处只写卷组名称即可，不需要设备的绝对路径。
+[root@ly ~]# vgremove storage 
+  Volume group "storage" successfully removed
+4.删除物理卷设备
+[root@ly ~]# pvremove /dev/sdc
+  Labels on physical volume "/dev/sdc" successfully wiped.
 
