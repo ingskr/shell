@@ -25,4 +25,50 @@ iptables -L
 iptables -I INPUT -s 192.168.10.0/24 -p tcp --dport 22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j REJECT
 
-规则链的默认拒绝动作只能是DROP，而不能是REJECT
+规则链的!!!!!!!!!!!1默认!!!!!!!!!!拒绝动作只能是!!!!!DROP!!!!!!!，而不能是REJECT
+参数	作用
+-P	设置默认策略
+-F	清空规则链
+-L	查看规则链
+-A	在规则链的末尾加入新规则
+-I num	在规则链的头部加入新规则
+-D num	删除某一条规则
+-s	匹配来源地址IP/MASK，加叹号“!”表示除这个IP外
+-d	匹配目标地址
+-i网卡名称	匹配从这块网卡流入的数据
+-o网卡名称	匹配从这块网卡流出的数据
+-p	匹配协议，如TCP、UDP、ICMP
+--dport num	匹配目标端口号
+--sport num	匹配来源端口号
+把INPUT规则链的默认策略设置为拒绝：
+iptables -P INPUT DROP
+#######################################################
+向INPUT规则链中添加拒绝所有人访问本机12345端口的策略规则：
+iptables -I INPUT -p tcp --dport 12345 -j REJECT
+iptables -I INPUT -p udp --dport 12345 -j REJECT
+#########################################################
+向INPUT规则链中添加拒绝192.168.10.5主机访问本机80端口（Web服务）的策略规则：
+iptables -I INPUT -p tcp -s 192.168.10.5 --dport 80 -j REJECT
+###########################################################
+向INPUT规则链中添加拒绝所有主机访问本机1000～1024端口的策略规则：
+iptables -I INPUT -p tcp --dport 1000:1024 -j REJECT
+iptables -I INPUT -p udp --dport 1000:1024 -j REJECT
+在配置linux之后记得保存命令以防下次失效
+service iptables save
+*********************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
