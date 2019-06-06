@@ -1,0 +1,28 @@
+在rhel7中，firewalld取代了iptables防火墙，他们用来定义防火墙策略略的防火墙管理工具】
+防火墙策略规则的匹配顺序是从上至下的，因此要把较为严格、优先级较高的策略规则放到前面，以免发生错误。
+iptables:
+    策略与规则链
+      从上至下的顺序来读取配置的策略规则，找到匹配项之后就结束匹配工作并去执行匹配项中定义的行为。
+      防火墙策略规则一般有两种：
+        1.通过（放行）
+        2.堵（阻止）
+      iptables服务把用于处理或过滤流量的策略目标称之为规则，多条规则可以组成一条规则链。
+      Ø	在进行路由选择前处理数据包（PREROUTING）；
+      Ø	处理流入的数据包（INPUT）；
+      Ø	处理流出的数据包（OUTPUT）；
+      Ø	处理转发的数据包（FORWARD）；
+      Ø	在进行路由选择后处理数据包（POSTROUTING）。
+      Linux系统中的防火墙策略设置为REJECT拒绝动作后，流量发送方会看到端口不可达的响应。
+      而把Linux系统中的防火墙策略修改成DROP拒绝动作后，流量发送方会看到响应超时的提醒。但是流量发送方无法判断流量是被拒绝，还是接收方主机当前不在线
+      通和堵。当把INPUT链设置为默认拒绝后，就要在防火墙策略中写入允许策略了，否则所有到来的流量都会被拒绝掉。另外，需要注意的是，规则链的默认拒绝动作只能是DROP，而不能是REJECT。
+向INPUT链中添加允许ICMP流量进入的策略规则：
+iptables -I INPUT -p icmp -j ACCEPT
+删除INPUT规则链中刚刚加入的那条策略（允许ICMP流量），并把默认策略设置为允许：
+iptables -D IMPUT 1
+iptables -P INPUT ACCEPT
+iptables -L
+将INPUT规则链设置为只允许指定网段的主机访问本机的22端口，拒绝来自其他所有主机的流量：
+iptables -I INPUT -s 192.168.10.0/24 -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -j REJECT
+
+规则链的默认拒绝动作只能是DROP，而不能是REJECT
