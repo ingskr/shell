@@ -247,6 +247,13 @@ sed -i 's/d/7523/g' /home/1.txt
 #ff
 
 
+linux nohup命令
+nohup命令及其输出文件
+不挂断的运行命令
+用法：nohup commod   [ & ]
+描述：nohup命令运行由commod参数和任何相关的参数指令命令，忽略所有挂断信号。
+在注销后使用nohup命令运行后台中的程序。
+要在后台中运行nohup命令，添加&到命令尾部。
 
 
 
