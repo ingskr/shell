@@ -18,7 +18,7 @@ cat > ~/.bash_profile << EOF
 在第三行加asdf 1.sh在1.sh文件
 sed -i '3i asdf 1.sh' 1.sh
 知道行号使用一下方法
-sed -i "88 -r a.file" b.file 在b.file中88行位置插入a.file
+sed -i '88 -r a.file' b.file 在b.file中88行位置插入a.file
 awk '1;NR==88{system(cat b.file)}' a.file > a.file
 如果不知道行号，采用正则匹配(文件)
 sed -i '/regex/a a.file' b.file
