@@ -6,9 +6,28 @@ else
 echo "解压过程出错"
 fi
 #########################################
+***********加入修改内容******************
 解压过程中将文件置为空
 >> /dev/null
 将文件追加
 cat >> ~/.bash_profile << EOF
 将文件重新写入
 cat > ~/.bash_profile << EOF
+***************sed的使用*******************
+在第几行加什么内容在哪个文件
+在第三行加asdf 1.sh在1.sh文件
+sed -i '3i asdf 1.sh' 1.sh
+知道行号使用一下方法
+sed -i "88 -r a.file" b.file 在b.file中88行位置插入a.file
+awk '1;NR==88{system(cat b.file)}' a.file > a.file
+如果不知道行号，采用正则匹配(文件)
+sed -i '/regex/a a.file' b.file
+awk '/target/{system('cat a.file')}' b.file > c.file
+字符(a是在加在目标位置后面，i加在目标位置前面，可继续在后面添加\n表示添加换行内容)
+sed '/目标位置/a\插入内容\n换行内容' file
+如果其中的目标位置在多行中都存在即,如在4行后加hahh
+sed '4/a\hahh' file
+在向指定行的末尾添加指定内容，比如在“ccccc”行的行尾介绍“ eeeee”
+sed 's/cc*/& eeeee/g' file
+样例参考
+https://www.jianshu.com/p/66f79ad53406
