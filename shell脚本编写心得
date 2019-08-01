@@ -31,3 +31,20 @@ sed '4/a\hahh' file
 sed 's/cc*/& eeeee/g' file
 样例参考
 https://www.jianshu.com/p/66f79ad53406
+[root@ly ~]# sed 's/3/& 99/g' test.sh 
+123 99
+3 9945
+543 99
+[root@ly ~]# cat test.sh 
+123
+345
+543
+[root@ly ~]# sed '2s/3/& 99/g' test.sh 
+123
+3 9945
+543
+[root@ly ~]# sed '2s/3/&99/g' test.sh 
+123
+39945
+543
+**************************************************************************
