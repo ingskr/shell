@@ -51,4 +51,7 @@ https://www.jianshu.com/p/66f79ad53406
 centos中赋值
 export A='[root@linuxprobe src]'
 echo $A   即可查看赋值内容
-
+**************************************************************************
+修改主机名方法
+hostnamectl set-hostname 取的名字
+systemctl restart systemd-hostnamed(重启生效生效)
