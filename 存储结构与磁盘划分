@@ -222,4 +222,21 @@ Do you really want to remove active logical volume storage/vo? [y/n]: y
 4.删除物理卷设备
 [root@ly ~]# pvremove /dev/sdc
   Labels on physical volume "/dev/sdc" successfully wiped.
+************************************************************************************************
+xfs_quota磁盘容量额配服务
+vim /etc/fatab
+UUID=812b1f7c-8b5b-43da-8c06-b9999e0fe48b /boot         xfs       defaults,uquota  1 2
+添加测试用户，赋予权限
+useradd tom
+chmou -Rf o+w /boot
+xfs_quota -x -c 'limit bsoft=3m bhard=6m isoft=3 ihard=6 tom' /boot
+解释：
+限制tom这个用户磁盘使用量的软限制硬限制分别为3,6M,创建文件数量的软限制硬限制分别为3个，6个，在/boot这个文件夹下
+切换Tom用户
+创建体积为8M的文件
+dd if=/dev/zero of=/boot/tom bs=8m count=1
+可以发现系统受限
 
+edquota用于编辑用户的quota
+edquota -u tom
+进入即可修改磁盘配额
