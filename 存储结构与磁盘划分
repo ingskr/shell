@@ -267,7 +267,7 @@ mdadm /dev/md0 -f /dev/sdb
 mdadm -D /dev/md0
 umount /RAID
 mdadm /dev/md0 -a /dev/sdb
-mount -z
+mount -a
 磁盘阵列+备份盘
 参数-n 3代表创建这个RAID 5磁盘阵列所需的硬盘数，参数-l 5代表RAID的级别，而参数-x 1则代表有一块备份盘
 mdadm -Cv /dev/md0 -n 3 -l 5 -x 1 /dev/sdb /dev/sdc /dev/sdd /dev/sde
