@@ -240,3 +240,14 @@ dd if=/dev/zero of=/boot/tom bs=8m count=1
 edquota用于编辑用户的quota
 edquota -u tom
 进入即可修改磁盘配额
+*****************************************************
+部署磁盘阵列
+使用mdadm命令
+创建RAID 10 名称为“/dev/md0”
+mdadm -Cv /dev/md0 -a yes -n 4 -l 10 /dev/sdb /dev/sdc /dev/sdd /dev/sde
+mkfs.exit4 /dev/md0
+mkdir /RAID
+mount /dev/md0 /RAID
+df -h
+mdadm -D /dev/md0
+echo "/dev/md0 /RAID ext4 defaults 0 0" >> /etc/fstab
