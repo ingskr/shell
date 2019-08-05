@@ -244,6 +244,17 @@ edquota -u tom
 部署磁盘阵列
 使用mdadm命令
 创建RAID 10 名称为“/dev/md0”
+-a	检测设备名称
+-n	指定设备数量
+-l	指定RAID级别
+-C	创建
+-v	显示过程
+-f	模拟设备损坏
+-r	移除设备
+-Q	查看摘要信息
+-D	查看详细信息
+-S	停止RAID磁盘阵列
+
 mdadm -Cv /dev/md0 -a yes -n 4 -l 10 /dev/sdb /dev/sdc /dev/sdd /dev/sde
 mkfs.ext4 /dev/md0 
 mkdir /RAID
@@ -251,3 +262,20 @@ mount /dev/md0 /RAID
 df -h
 mdadm -D /dev/md0
 echo "/dev/md0 /RAID ext4 defaults 0 0" >> /etc/fstab
+磁盘损坏及修复
+mdadm /dev/md0 -f /dev/sdb
+mdadm -D /dev/md0
+umount /RAID
+mdadm /dev/md0 -a /dev/sdb
+mount -z
+磁盘阵列+备份盘
+参数-n 3代表创建这个RAID 5磁盘阵列所需的硬盘数，参数-l 5代表RAID的级别，而参数-x 1则代表有一块备份盘
+mdadm -Cv /dev/md0 -n 3 -l 5 -x 1 /dev/sdb /dev/sdc /dev/sdd /dev/sde
+mdadm -D /dev/md0
+mkfs.ext4 /dev/md0
+echo "/dev/md0 /RAID ext4 defaults 0 0" >> /etc/fstab
+mkdir /RAID
+mount -a
+现在移除设备/dev/sdb
+mdadm /dev/md0 -f /dev/sdb
+mdadm -D /dev/md0
