@@ -245,7 +245,7 @@ edquota -u tom
 使用mdadm命令
 创建RAID 10 名称为“/dev/md0”
 mdadm -Cv /dev/md0 -a yes -n 4 -l 10 /dev/sdb /dev/sdc /dev/sdd /dev/sde
-mkfs.exit4 /dev/md0
+mkfs.ext4 /dev/md0 
 mkdir /RAID
 mount /dev/md0 /RAID
 df -h
